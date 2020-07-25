@@ -7,7 +7,9 @@ import app from './app';
 
 const routes = new Router();
 
-routes.get('/', (req, res) => res.json({ message: 'Welcome to Omni CLI' }));
+routes.get('/', (req, res) => {
+    res.redirect("https://fechamentofacil.netlify.app/");
+});
 routes.get('/user', UserController.index);
 routes.post('/user', UserController.store);
 routes.post('/session', SessionController.store);
