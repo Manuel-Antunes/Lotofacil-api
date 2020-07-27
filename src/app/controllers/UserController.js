@@ -3,14 +3,12 @@ import * as Yup from "yup";
 import { addDays } from 'date-fns';
 class UserController {
     async index(req, res) {
-        const { page = 1 } = req.query;
         const users = await User.findAll({
             where: {
                 loto_fk: req.query.loto
             },
             attributes: ['name', 'id', 'email', 'cpf', 'telefone', 'admin'],
-            limit: 20,
-            offset: (page - 1) * 20
+            limit: 20
         });
         return res.json(users);
     }
