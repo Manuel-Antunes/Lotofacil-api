@@ -7,7 +7,7 @@ class UserController {
             where: {
                 loto_fk: req.query.loto
             },
-            attributes: ['name', 'id', 'email', 'cpf', 'telefone', 'admin', 'login', 'remaining_days'],
+            attributes: ['name', 'id', 'email', 'cpf', 'telefone', 'admin', 'login', 'remaining_days', "contract_date", "contract_expires"],
             limit: 20,
             offset: (req.query.page - 1) * 20
         });
