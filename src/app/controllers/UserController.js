@@ -34,8 +34,17 @@ class UserController {
         if (userExists) {
             return res.status(400).json({ error: "User already exists" });
         }
+        const userExists2 = await User.findOne({
+            where: {
+                login: req.body.login
+            }
+        });
+        if (userExists2) {
+            return res.status(400).json({ error: "User already exists" });
+        }
 
-        const { id, name, telefone, email, cpf, login, lotoUserFk } = await User.create(req.body)
+
+        const { id, name, telefone, email, cpf, login, lotoUserFk, admin, remaining_days } = await User.create(req.body)
 
         return res.json({
             id,
@@ -44,7 +53,9 @@ class UserController {
             telefone,
             cpf,
             login,
-            lotoUserFk
+            lotoUserFk,
+            admin,
+            remaining_days
         })
     }
 
@@ -84,7 +95,7 @@ class UserController {
     async contrat(req, res) {
         const plan = req.params.plan;
         const user = await User.findOne({
-            where: { id: req.userId }
+            where: { id: req.query.id }
         });
         if (plan == "1") {
             const a = await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 30) });
@@ -96,7 +107,6 @@ class UserController {
         }
     }
     async check(req, res) {
-        console.log("FOI")
         const { onze, doze, treze, quatorze, quinze } = req.body;
         const user = await User.findOne({
             where: { id: req.userId }
@@ -109,6 +119,12 @@ class UserController {
             quinze_pontos: quinze + user.quinze_pontos
         })
         return res.json(updated);
+    }
+    async delete(req, res) {
+        const deleted = await User.destroy({
+            where: { id: req.query.id }
+        })
+        return res.json({ ok: true });
     }
 }
 

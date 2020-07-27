@@ -24,13 +24,13 @@ class User extends Model {
             remaining_days: {
                 type: Sequelize.VIRTUAL,
                 get() {
-                    return this.contract_date ? differenceInDays(this.contract_date, this.contract_expires) : 0;
+                    return this.contract_date ? differenceInDays(this.contract_expires, this.contract_date) : 0;
                 }
             },
         }, {
             sequelize,
         });
-        this.addHook('beforeSave', async(user) => {
+        this.addHook('beforeSave', async (user) => {
             if (user.password) {
                 user.password_hash = await bcrypt.hash(user.password, 8);
             }
