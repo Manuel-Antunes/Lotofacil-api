@@ -7,10 +7,15 @@ class UserController {
             where: {
                 loto_fk: req.query.loto
             },
-            attributes: ['name', 'id', 'email', 'cpf', 'telefone', 'admin'],
-            limit: 20
+            attributes: ['name', 'id', 'email', 'cpf', 'telefone', 'admin', 'login', 'remaining_days'],
+            limit: 20,
+            offset: (req.query.page - 1) * 20
         });
-        return res.json(users);
+        const size = await User.count();
+        return res.json({
+            users,
+            size
+        });
     }
     async store(req, res) {
         const schema = Yup.object().shape({
@@ -103,7 +108,13 @@ class UserController {
             return res.json({ contract_date: new Date(), contractExpires: addDays(new Date(), 30) });
         } else if (plan == "2") {
             await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 365) });
+            return res.json({ contractExpires: addDays(new Date(), 120) });
+        } else if (plan == "3") {
+            await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 365) });
             return res.json({ contractExpires: addDays(new Date(), 365) });
+        } else if (plan == "4") {
+            await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 365) });
+            return res.json({ contractExpires: addDays(new Date(), 100000) });
         }
     }
     async check(req, res) {
