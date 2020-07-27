@@ -11,9 +11,9 @@ const routes = new Router();
 routes.get('/', (req, res) => {
     res.redirect("https://fechamentofacil.netlify.app/");
 });
-routes.post('/user', UserController.store);
 routes.post('/session', SessionController.store);
 routes.use(authMiddleware);
+routes.post('/user', adminMiddleware, UserController.store);
 routes.get('/user', adminMiddleware, UserController.index);
 routes.put('/user/check', UserController.check);
 routes.put('/user/:plan', adminMiddleware, UserController.contrat);
