@@ -1,7 +1,7 @@
 import { Model } from 'sequelize';
 import Sequelize from 'sequelize';
 import bcrypt from 'bcryptjs';
-import { differenceInDays } from 'date-fns';
+import { differenceInDays, add, parseISO } from 'date-fns';
 class User extends Model {
     static init(sequelize) {
         super.init({
@@ -24,7 +24,7 @@ class User extends Model {
             remaining_days: {
                 type: Sequelize.VIRTUAL,
                 get() {
-                    return this.contract_date ? differenceInDays(this.contract_expires, this.contract_date) : 0;
+                    return this.contract_date ? differenceInDays(this.contract_expires, add(this.contract_date, parseISO(new Date().getDate))) : 0;
                 }
             },
         }, {

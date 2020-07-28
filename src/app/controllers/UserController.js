@@ -18,7 +18,7 @@ class UserController {
         });
     }
     async get(req, res) {
-        const user = await User.findByPk(req.params.id,{
+        const user = await User.findByPk(req.params.id, {
             attributes: ['name', 'email', 'cpf', 'telefone', 'admin', 'login']
         });
         return res.json(user);
@@ -36,7 +36,6 @@ class UserController {
         if (!(await schema.isValid(req.body))) {
             return res.status(401).json({ error: "Validation fails" })
         }
-        console.log("FOI GARAI");
         const userExists = await User.findOne({
             where: {
                 email: req.body.email
@@ -84,8 +83,8 @@ class UserController {
         }
         const user = await User.findByPk(req.params.id);
 
-        const newUser = await user.update(req.body);
-        return res.json(newUser);
+        await user.update(req.body);
+        return res.json({ ok: true });
     }
     async contrat(req, res) {
         const plan = req.params.plan;
@@ -94,7 +93,6 @@ class UserController {
         });
         if (plan == "1") {
             const a = await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 30) });
-            console.log(addDays(new Date(), 30));
             return res.json({ contract_date: new Date(), contractExpires: addDays(new Date(), 30) });
         } else if (plan == "2") {
             await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 120) });
