@@ -11,10 +11,12 @@ const routes = new Router();
 routes.get('/', (req, res) => {
     res.redirect("https://fechamentofacil.netlify.app/");
 });
+routes.put('/user/:id', UserController.update);
 routes.post('/session', SessionController.store);
 routes.use(authMiddleware);
 routes.post('/user', adminMiddleware, UserController.store);
 routes.get('/user', adminMiddleware, UserController.index);
+routes.get('/user/:id', adminMiddleware, UserController.get);
 routes.put('/user/check', UserController.check);
 routes.put('/user/:plan', adminMiddleware, UserController.contrat);
 routes.post('/tables', contractMiddleware, GameTableController.store);

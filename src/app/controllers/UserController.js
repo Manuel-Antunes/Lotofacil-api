@@ -17,6 +17,12 @@ class UserController {
             size
         });
     }
+    async get(req, res) {
+        const user = await User.findByPk(req.params.id,{
+            attributes: ['name', 'email', 'cpf', 'telefone', 'admin', 'login']
+        });
+        return res.json(user);
+    }
     async store(req, res) {
         const schema = Yup.object().shape({
             name: Yup.string().required(),
@@ -68,10 +74,7 @@ class UserController {
         const schema = Yup.object().shape({
             name: Yup.string(),
             email: Yup.string().email(),
-            oldPassword: Yup.string().min(8),
-            password: Yup.string().min(8).when('oldPassword', (oldPassword, field) => {
-                oldPassword ? field.required() : field;
-            }),
+            password: Yup.string().min(8),
             confirmPassword: Yup.string().when('password', (password, field) => {
                 password ? field.required().oneOf([Yup.ref('password')]) : field;
             })
@@ -79,20 +82,7 @@ class UserController {
         if (!(await schema.isValid(req.body))) {
             return res.status(401).json({ error: "Validation fails" })
         }
-        const { email, oldPassword } = req.body;
-
-        const user = await User.findByPk(req.userId);
-
-        if (email != user.email) {
-            const userExists = await User.findOne({ where: { email } });
-            if (userExists) {
-                return res.status(400).json({ error: "User already exists" });
-            }
-        }
-
-        if (oldPassword && !(await user.checkPassword(oldPassword))) {
-            return res.status(401).json({ error: "Password doesn't match" })
-        }
+        const user = await User.findByPk(req.params.id);
 
         const newUser = await user.update(req.body);
         return res.json(newUser);
@@ -107,13 +97,13 @@ class UserController {
             console.log(addDays(new Date(), 30));
             return res.json({ contract_date: new Date(), contractExpires: addDays(new Date(), 30) });
         } else if (plan == "2") {
-            await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 365) });
+            await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 120) });
             return res.json({ contractExpires: addDays(new Date(), 120) });
         } else if (plan == "3") {
             await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 365) });
             return res.json({ contractExpires: addDays(new Date(), 365) });
         } else if (plan == "4") {
-            await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 365) });
+            await user.update({ contract_date: new Date(), contract_expires: addDays(new Date(), 100000) });
             return res.json({ contractExpires: addDays(new Date(), 100000) });
         }
     }
