@@ -18,7 +18,7 @@ routes.post('/user', adminMiddleware, UserController.store);
 routes.get('/user', adminMiddleware, UserController.index);
 routes.get('/user/:id', adminMiddleware, UserController.get);
 routes.put('/user/check', UserController.check);
-routes.put('/user/:plan', adminMiddleware, UserController.contrat);
+routes.put('/user/contract/:plan', adminMiddleware, UserController.contrat);
 routes.post('/tables', contractMiddleware, GameTableController.store);
 routes.delete('/tables/:id', GameTableController.delete);
 routes.delete('/users', adminMiddleware, UserController.delete);
