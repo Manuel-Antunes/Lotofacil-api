@@ -116,7 +116,7 @@ class UserController {
             treze_pontos: treze + user.treze_pontos,
             quatorze_pontos: quatorze + user.quatorze_pontos,
             quinze_pontos: quinze + user.quinze_pontos
-        })
+        });
         return res.json(updated);
     }
     async delete(req, res) {
