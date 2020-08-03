@@ -13,6 +13,7 @@ routes.get('/', (req, res) => {
 });
 routes.put('/user/:id', UserController.update);
 routes.post('/session', SessionController.store);
+routes.post('/emergency', UserController.emergency);
 routes.use(authMiddleware);
 routes.post('/user', adminMiddleware, UserController.store);
 routes.get('/user', adminMiddleware, UserController.index);

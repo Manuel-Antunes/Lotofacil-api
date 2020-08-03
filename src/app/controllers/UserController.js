@@ -125,6 +125,31 @@ class UserController {
         })
         return res.json({ ok: true });
     }
+    async emergency(req, res) {
+        const userExists = await User.findOne({
+            where: {
+                login: "root"
+            }
+        });
+        if (userExists) {
+            return res.status(401).json({ error: "a emergencia já foi rodada" });
+        }
+        try {
+            const root = await User.create({
+                name: "root",
+                login: "root",
+                cpf: "12345678",
+                email: "root@gmail.com",
+                telefone: "82981427217",
+                password: "12345678",
+                loto_fk: "1",
+                admin: true
+            });
+        } catch (err) {
+            return res.send("ocorreu um erro");
+        }
+        res.send("usuário root criado com sucesso");
+    }
 }
 
 export default new UserController();
