@@ -2,9 +2,9 @@ require('dotenv/config');
 
 module.exports = {
     dialect: 'mysql',
-    host: 'localhost',
-    username: 'root',
-    password: 'root',
+    host: 'fechamentofacil',
+    username: 'fechamentofacil',
+    password: 'Manager01',
     database: 'lotofacil',
     define: {
         timestamps: true,
