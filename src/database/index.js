@@ -19,7 +19,7 @@ class Database {
             .map(model => model.init(this.connection));
     }
     mongo() {
-        this.mongoConnection = mongoose.connect("mongodb://localhost:27017/lotofacil", {
+        this.mongoConnection = mongoose.connect(process.env.MONGO_DB_HOST, {
             useNewUrlParser: true,
             useFindAndModify: true
         });
