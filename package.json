@@ -16,7 +16,7 @@
         "dotenv": "^8.0.0",
         "express": "^4.17.1",
         "express-async-errors": "^3.1.1",
-        "jsonwebtoken": "^8.5.1",
+        "jsonwebtoken": "^9.0.0",
         "mongoose": "^5.9.25",
         "mysql2": "^2.1.0",
         "pg": "^7.12.1",
